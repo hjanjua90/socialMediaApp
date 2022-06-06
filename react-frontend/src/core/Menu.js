@@ -21,26 +21,6 @@ const Menu = ({history}) =>(
                     Home
                 </Link>
             </li>
-            {/* {!isAuthenticated() && (
-                <>
-                    <li className="nav-item">
-                    <Link 
-                    className="nav-link" 
-                    style={isActive(history, "/signin")} 
-                    to="/signin">
-                        Sign In
-                    </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link 
-                        className="nav-link" 
-                        style={isActive(history, "/signup")}  
-                        to="/signup">
-                            Sign Up
-                        </Link>
-                    </li>
-                </>
-            )} */}
             {
                 !isAuthenticated() && 
                 (
@@ -66,7 +46,9 @@ const Menu = ({history}) =>(
                         </span>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link">{isAuthenticated().user.name}</Link>
+                        <Link to={`/user/${isAuthenticated().user._id}'s profile`} style={{color:"#fff"}}className="nav-link">
+                            {`${isAuthenticated().user.name}`}
+                        </Link>
                     </li>
                 </>
             )}
