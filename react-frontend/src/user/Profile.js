@@ -12,12 +12,12 @@ class Profile extends Component {
     }
     componentDidMount(){
         const userId = this.props.match.params.userId
-        // fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`,{
-        //     method:"GET",
-        //     headers:{
+        fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`,{
+            method:"GET",
+            headers:{
 
-        //     }
-        // })
+            }
+        })
     }
 
     render(){
