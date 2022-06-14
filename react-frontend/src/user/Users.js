@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+// import user from "./../../../node-api/controllers/user";
 import {list} from './apiUser'
 
 class Users extends Component {
@@ -20,15 +21,27 @@ class Users extends Component {
         })
     }
 
+
+    renderUsers = (users)=>(
+        <div className="card">
+                    {
+                        users.map((user, i)=>
+                            (
+                                <div key={i}>
+                                    <p>{user.name}</p>
+                                </div>
+                            )
+                        
+                    )}
+                </div>
+    )
+
     render(){
-        const {users} = this.state
+        const { users } = this.state;
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5"></h2>
-
-                <div className="card">
-                    {JSON.stringify(users)}
-                </div>
+                <h2 className="mt-5 mb-5">Users</h2>
+                {this.renderUsers(users)}
             </div>
         );
     }
