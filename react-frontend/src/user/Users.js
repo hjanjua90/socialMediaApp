@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 // import user from "./../../../node-api/controllers/user";
-import {list} from './apiUser'
+import {list} from './apiUser';
+import DefaultProfile from '../images/avatar.jpeg';
+import { Link } from "react-router-dom";
 
 class Users extends Component {
     constructor(){
@@ -23,16 +25,29 @@ class Users extends Component {
 
 
     renderUsers = (users)=>(
-        <div className="card">
-                    {
-                        users.map((user, i)=>
-                            (
-                                <div key={i}>
-                                    <p>{user.name}</p>
+        <div className="row">
+                    {users.map((user, i)=>(
+                            <div className="card col-md-4"  key={i}>
+                                <img 
+                                className="card-img-top" 
+                                src={DefaultProfile} 
+                                alt={user.name}
+                                style={{width:'100', height:'15vw', objectFit:'cover'}}
+                                />
+                                <div className="card-body">
+                                    <h5 className="card-title">{user.name}</h5>
+                                    <p className="card-text">
+                                        {user.email}
+                                    </p>
+                                    <Link 
+                                        to={`/user/${user._id}`}
+                                        className="btn btn-raised btn-small btn-primary"> View Profile
+                                    </Link>
+                                
                                 </div>
-                            )
+                            </div>
                         
-                    )}
+                    ))}
                 </div>
     )
 
