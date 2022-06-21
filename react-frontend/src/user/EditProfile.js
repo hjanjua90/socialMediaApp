@@ -1,21 +1,42 @@
-import React, { Component} from "react";
-import {signup} from '../auth';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom';
+import {isAuthenticated} from '../auth';
+import {read, update} from './apiUser';
 
 
-class Signup extends Component {
+class EditProfile extends Component {
     constructor(){
-        super()
+        super ()
         this.state = {
+            id:"",
             name:"",
             email:"",
             password:"",
-            error:"",
-            open: false
-        };
+            redirectToProfile:false
+        }
+    }
+    init = (userId)=>{
+        const token = isAuthenticated().token
+            read(userId, token)
+            .then(data=>{
+                if(data.error){
+                    this.setState({redirectToProfile:true})
+                } else {
+                    this.setState({
+                        id: data._id,
+                        name: data.name,
+                        email: data.email,
+                        error:""
+                    });
+                }
+            })
+    }
+    // accesses user info from backend
+    componentDidMount(){
+        const userId = this.props.match.params.userId
+        this.init(userId);
     }
     handleChange = name => event => {
-        this.setState({ error: "" });
         this.setState({[name]: event.target.value})
     };
 
@@ -25,25 +46,25 @@ class Signup extends Component {
         const user = {
             name,
             email,
-            password,
+            password :password || undefined
         };
-        signup(user)
-        .then(data => {
+        // console.log(user)
+        // the userId and token will update the backend
+        const userId = this.props.match.params.userId;
+        const token = isAuthenticated().token;
+        update(userId, token).then(data => {
             if (data.error) {
                 this.setState({error: data.error})
             }
             else {
                 this.setState({
-                    error:"",
-                    name:"",
-                    email:"",
-                    password:"",
-                    open:true
-                })
+                    redirectToProfile:true
+                });
             }
         })
         }; 
-    signupForm = (name, email, password) =>(
+
+    signupForm = (name, email,password) =>(
         <form>
             <div className="form-group">
                 <label className="text-muted">Name</label>
@@ -77,35 +98,23 @@ class Signup extends Component {
                 onClick={this.clickSubmit}
                 className="btn btn-raised btn-primary"
             >
-                Submit
+                Update
             </button>
         </form>
     );
-    render(){
+    render() {
+        const {id,name, email, password, redirectToProfile} = this.state;
 
-        const {name, email, password, error, open} = this.state;
-    
+        if(redirectToProfile){
+            <Redirect to={`/user/${id}`}/>;
+        }
+
         return (
-            <div className='container'>
-                <h2 className='mt-5 mb-5'>Register</h2>
-    
-                <div 
-                    className='alert alert-danger' 
-                    style = {{display: error? "" : "none"}}>{error}
-                </div>
-    
-                <div 
-                    className='alert alert-info' 
-                    style = {{display: open? "" : "none"}}>
-                    Account is successfully created. Please 
-                    <Link to = "/signin">Login</Link>
-                </div>
-                {this.signupForm(name, email, password)}
-                
-            </div>
+        <div className='container'>
+            <h2 className='mt-5 mb-5'>Edit Profile</h2>
+            {this.signupForm(name, email,password)}
+        </div>
         )
     }
 }
-
-
-export default Signup;
+export default EditProfile;

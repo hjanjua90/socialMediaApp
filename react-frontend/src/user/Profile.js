@@ -26,6 +26,7 @@ class Profile extends Component {
                 }
             })
     }
+    // accesses user info from backend
     componentDidMount(){
         const userId = this.props.match.params.userId
         this.init(userId);
