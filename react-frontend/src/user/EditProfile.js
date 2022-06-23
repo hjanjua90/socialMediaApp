@@ -39,8 +39,8 @@ class EditProfile extends Component {
         this.init(userId);
     }
 
-    isValid= ()=>{
-        const{name,email,password} = this.state
+    isValid= () => {
+        const{name,email,password} = this.state;
         if(name.length === 0){
             this.setState({error:"Name is required",loading:false});
             return false;
@@ -131,7 +131,7 @@ class EditProfile extends Component {
         const {id,name, email, password, redirectToProfile,error} = this.state;
 
         if(redirectToProfile){
-            <Redirect to={`/user/${id}`}/>;
+            return <Redirect to={`/user/${id}`}/>;
         }
 
 

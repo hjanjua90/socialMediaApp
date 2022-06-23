@@ -48,7 +48,7 @@ exports.updateUser = (req, res, next) => {
         if(err){
             return res.status(400).json({
                 error: "Yuu are not authorized to perform this action"
-            })
+            });
         }
         user.hashed_password = undefined;
         user.salt = undefined;
