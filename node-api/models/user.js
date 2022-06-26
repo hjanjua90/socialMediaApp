@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     updated:{
         type: Date
     },
+    photo:{
+        data:Buffer,
+        conentType: String,
+    }
     
 })
 

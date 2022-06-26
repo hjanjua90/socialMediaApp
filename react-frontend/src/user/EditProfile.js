@@ -14,6 +14,7 @@ class EditProfile extends Component {
             password:"",
             redirectToProfile:false,
             error:"",
+            fileSize:0,
             loading:false,
         }
     }
@@ -41,7 +42,11 @@ class EditProfile extends Component {
     }
 
     isValid= () => {
-        const{name,email,password} = this.state;
+        const{name,email,password, fileSize} = this.state;
+        if(fileSize > 100000){
+            this.setState({error:"File size should be less than 100kb",loading:false});
+            return false;
+        };
         if(name.length === 0){
             this.setState({error:"Name is required",loading:false});
             return false;
@@ -60,25 +65,19 @@ class EditProfile extends Component {
 
     handleChange = name => event => {
         const value = name === 'photo' ? event.target.files[0] :event.target.value
+        this.userData.set(name, value)
         this.setState({[name]: value});
     };
 
     clickSubmit = event => {
         event.preventDefault();
+        this.setState({loading:true})
     
         if(this.isValid()){
-            const {name, email, password} = this.state;
-            const user = {
-                name,
-                email,
-                password :password || undefined
-            };
-            // console.log(user)
-            // the userId and token will update the backend
             const userId = this.props.match.params.userId;
             const token = isAuthenticated().token;
     
-            update(userId, token,user).then(data => {
+            update(userId, token,this.userData).then(data => {
                 if (data.error) {
                     this.setState({error: data.error})
                 }
@@ -139,7 +138,15 @@ class EditProfile extends Component {
         </form>
     );
     render() {
-        const {id,name, email, password, redirectToProfile,error} = this.state;
+        const {
+            id,
+            name, 
+            email,
+            password, 
+            redirectToProfile,
+            error,
+            loading
+        } = this.state;
 
         if(redirectToProfile){
             return <Redirect to={`/user/${id}`}/>;
@@ -152,6 +159,14 @@ class EditProfile extends Component {
             <div className="alert alert-danger" style={{display: error? "" : "none"}}>
                 {error}
             </div>
+            {
+                    loading?(
+                        <div className="jumbotron text-center">
+                            <h2>Loading ...</h2>
+                        </div>
+                    ):(
+                        ""
+                    )}
 
             {this.signupForm(name, email,password)}
         </div>
