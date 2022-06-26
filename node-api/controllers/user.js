@@ -12,9 +12,9 @@ exports.userById = (req,res,next, id)=>{
             })
         }
         req.profile  = user //adds profile object in req with user info
-        next()
+        next();
 
-    })
+    });
 };
 
 exports.hasAuthorization = (req, res, next) => {
@@ -43,22 +43,6 @@ exports.getUser = (req,res)=>{
     return res.json(req.profile);
 };
 
-// exports.updateUser = (req, res, next) => {
-//     let user = req.profile;
-//     user = _.extend(user, req.body)// extend will mutate the source object
-//     user.updated = Date.now();
-//     user.save((err) => {
-//         if(err){
-//             return res.status(400).json({
-//                 error: "Yuu are not authorized to perform this action"
-//             });
-//         }
-//         user.hashed_password = undefined;
-//         user.salt = undefined;
-//         res.json({user})
-
-//     })
-// };
 
 
 exports.updateUser = (req, res, next) =>{
@@ -95,7 +79,14 @@ exports.updateUser = (req, res, next) =>{
 
 };
 
+exports.userPhoto = (req, res, next) =>{
+    if (req.profile.photo.data){
+        res.set("Content-Type", req.profile.photo.contentType)
+        return res.send(req.profile.photo.data);
+    }
+    next();
 
+}
 
 exports.deleteUser = (req,res, next) => {
     let user = req.profile;
@@ -105,9 +96,6 @@ exports.deleteUser = (req,res, next) => {
 
             })
         }
-        // user.hashed_password = undefined;
-        // user.salt = undefined;
-        // res.json({user})
         res.json({
             message: "User successfully deleted"
         })

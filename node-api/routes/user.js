@@ -4,7 +4,9 @@ const {
     allUsers, 
     getUser, 
     updateUser,
-    deleteUser} = require('../controllers/user');
+    deleteUser,
+    userPhoto,
+    } = require('../controllers/user');
 const {requireSignin} = require('../controllers/auth');
 
 const router = express.Router();
@@ -14,6 +16,8 @@ router.get('/user/:userId', requireSignin, getUser);
 router.put('/user/:userId', requireSignin, updateUser);
 router.delete('/user/:userId', requireSignin, deleteUser);
 
+// photo-route to show user photo
+router.get("/user/photo/:userId", userPhoto)
 
 //for any route containing :userId, the app will first execute userById()
 router.param("userId", userById)

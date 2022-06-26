@@ -64,9 +64,14 @@ class EditProfile extends Component {
     }
 
     handleChange = name => event => {
-        const value = name === 'photo' ? event.target.files[0] :event.target.value
+        const value =
+            name === 'photo' ? event.target.files[0] :event.target.value
+
+        const fileSize =  
+            name === 'photo' ? event.target.files[0].size :event.target.value
+
         this.userData.set(name, value)
-        this.setState({[name]: value});
+        this.setState({[name]: value, fileSize});
     };
 
     clickSubmit = event => {
