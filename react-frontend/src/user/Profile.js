@@ -41,17 +41,21 @@ class Profile extends Component {
         if(redirectToSignIn){
             return <Redirect to="/signin"/>
         }
+
+        const photoUrl = user._id ? `${process.env.REACT_APP_API_URL}/user/photo/${user._id}?${new Date().getTime()}`: DefaultProfile;
+
         return (
             <div className='container'>
                 <h2 className="mt-5 mb-5">Profile</h2>
                 <div className='row'>
                     <div className='col-md-6'>
-                        <img 
-                            className="card-img-top" 
-                            src={DefaultProfile} 
-                            alt={user.name}
-                            style={{width:'100', height:'15vw', objectFit:'cover'}}
-                        />
+                            <img
+                                style={{height:"200px", width:"auto"}}
+                                className="img-thumbnail"
+                                src={photoUrl}
+                                onError={i=> (i.target.src = `${DefaultProfile}`)}
+                                alt={user.name}
+                            />
                     </div>
                 <div className='col md-6'>
                 <div className='lead mt-2'>
@@ -74,7 +78,14 @@ class Profile extends Component {
                             )
                         }
                         
+                    </div>
                 </div>
+                <div className='row'>
+                    <div className='col md-12 mt-5 mb-5'>
+                        <hr/>
+                        <p className='lead'>{user.about}</p>
+                        <hr/>
+                    </div>
                 </div>
             </div>
         )
