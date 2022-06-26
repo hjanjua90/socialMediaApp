@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
 import {isAuthenticated} from '../auth';
-import {read, update} from './apiUser';
+import {read, update, updateUser} from './apiUser';
 import DefaultProfile from '../images/avatar.jpeg';
 
 
@@ -89,11 +89,12 @@ class EditProfile extends Component {
                 if (data.error) {
                     this.setState({error: data.error})
                 }
-                else {
-                    this.setState({
-                        redirectToProfile:true
-                    });
-                }
+                else
+                    updateUser(data, ()=>{
+                        this.setState({
+                            redirectToProfile:true
+                        });
+                    })
             })
             }; 
         }
