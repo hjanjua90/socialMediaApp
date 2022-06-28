@@ -2,7 +2,7 @@ const User = require("../models/user");
 const _ = require("lodash");
 const formidable = require('formidable')
 const fs = require('fs');
-const e = require("express");
+
 
 exports.userById = (req,res,next, id)=>{
     User.findById(id)
@@ -41,13 +41,17 @@ exports.allUsers = (req, res)=>{
     }).select("name email updated created");
 };
 
+// exports.getUser = (req,res)=>{
+//     req.profile.hashed_password = undefined;
+//     req.profile.salt = undefined;
+//     return res.json(req.profile);
+// };
+
 exports.getUser = (req,res)=>{
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
     return res.json(req.profile);
 };
-
-
 
 exports.updateUser = (req, res, next) =>{
     let form = new formidable.IncomingForm()
@@ -135,6 +139,9 @@ exports.addFollower = (req, res) =>{
             res.json(result);
         })
 };
+
+
+
 exports.removeFollowing = (req, res, next) =>{
     User.findByIdAndUpdate(
         req.body.userId, 
@@ -164,3 +171,7 @@ exports.removeFollower = (req, res) =>{
             res.json(result);
         })
 };
+
+
+
+
